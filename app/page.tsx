@@ -3,24 +3,18 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { POINTS, giftedPoints, score } from "@/lib/game";
-import { actions, timer, useApp } from "@/lib/store";
-import { useClock } from "@/components/useClock";
+import { actions, useApp } from "@/lib/store";
 import { Button, Panel, Row, Section } from "@/components/ui";
 import { Counter, Objective } from "@/components/score/Controls";
 import { Fouls } from "@/components/score/Fouls";
-import { IconPause, IconPlay, IconUndo } from "@/components/icons";
+import { IconUndo } from "@/components/icons";
 
 export default function ScoreConsole() {
   const app = useApp();
-  const clock = useClock();
   const t = app.live.tally;
   const b = score(t);
   const [confirmSave, setConfirmSave] = useState(false);
   const [saved, setSaved] = useState<string | null>(null);
-
-  // RELICS only score during AUTO. Once the clock passes AUTO the button locks
-  // so nobody logs a 10 point ball as a 40 point one.
-  const relicsOpen = clock.phase === "pre" || clock.phase === "auto";
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -30,13 +24,12 @@ export default function ScoreConsole() {
 
       const map: Record<string, () => void> = {
         a: () => actions.bump("artefacts", 1),
-        r: () => relicsOpen && actions.addRelic(),
+        r: () => actions.addRelic(),
         l: () => actions.bump("laps", 1),
         m: () => actions.toggleFlag("mobilise"),
         d: () => actions.toggleFlag("dock"),
         c: () => actions.toggleFlag("camp"),
         z: () => actions.undo(),
-        " ": () => timer.toggle(),
       };
       const fn = map[e.key.toLowerCase()];
       if (fn) {
@@ -46,7 +39,7 @@ export default function ScoreConsole() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [relicsOpen]);
+  }, []);
 
   const handleSave = () => {
     if (!confirmSave) {
@@ -84,12 +77,10 @@ export default function ScoreConsole() {
         />
         <Counter
           label="Relic"
-          worth={`${POINTS.relicAuto}`}
+          worth={`${POINTS.relicAuto} in auto`}
           value={t.relicsAuto}
           onAdd={() => actions.addRelic()}
           onSubtract={() => actions.removeRelic()}
-          locked={!relicsOpen}
-          lockNote="Auto only — now count as artefacts"
         />
         <Counter
           label="Lap"
@@ -119,44 +110,15 @@ export default function ScoreConsole() {
           />
         </div>
 
-        <div className="flex shrink-0 items-stretch gap-2.5">
-          <button
-            type="button"
-            onClick={() => timer.toggle()}
-            className="tap flex h-14 flex-1 items-center justify-center gap-2 rounded-xl border text-[15px] font-semibold"
-            style={
-              clock.running
-                ? {
-                    borderColor: "var(--color-line)",
-                    background: "var(--color-raised)",
-                    color: "var(--color-ink)",
-                  }
-                : {
-                    borderColor:
-                      "color-mix(in oklab, var(--accent) 45%, transparent)",
-                    background: "var(--accent-deep)",
-                    color: "var(--accent)",
-                  }
-            }
-          >
-            {clock.running ? (
-              <IconPause className="h-4 w-4" />
-            ) : (
-              <IconPlay className="h-4 w-4" />
-            )}
-            {clock.running ? "Pause" : clock.started ? "Resume" : "Start match"}
-          </button>
-          <button
-            type="button"
-            onClick={() => actions.undo()}
-            disabled={app.undo.length === 0}
-            aria-label="Undo"
-            className="tap flex h-14 w-[104px] shrink-0 items-center justify-center gap-2 rounded-xl border border-line bg-panel text-[14px] font-semibold text-ink-muted disabled:opacity-30 sm:w-[128px]"
-          >
-            <IconUndo className="h-4 w-4" />
-            Undo
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => actions.undo()}
+          disabled={app.undo.length === 0}
+          className="tap flex h-14 shrink-0 items-center justify-center gap-2 rounded-xl border border-line bg-panel text-[14px] font-semibold text-ink-muted disabled:opacity-30"
+        >
+          <IconUndo className="h-4 w-4" />
+          Undo
+        </button>
       </div>
 
       {/* ------------------------------------------------------------ */}

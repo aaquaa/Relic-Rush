@@ -109,19 +109,24 @@ export function Shell({ children }: { children: React.ReactNode }) {
               ) : null}
             </div>
             <div className="eyebrow mt-0.5">
-              Match {app.live.matchNumber || "—"} · {phaseLabel(clock.phase)}
+              Match {app.live.matchNumber || "—"}
+              {clock.started ? ` · ${phaseLabel(clock.phase)}` : ""}
             </div>
           </div>
 
-          <div className="text-right leading-none">
-            <div
-              className={`tnum font-mono text-[22px] font-bold ${urgent ? "urgent" : ""}`}
-              style={{ color: urgent ? "var(--color-fault)" : undefined }}
-            >
-              {formatClock(clock.phaseRemaining)}
+          {/* The clock only appears once someone actually starts it on the
+              Clock page — scoring does not depend on it. */}
+          {clock.started ? (
+            <div className="text-right leading-none">
+              <div
+                className={`tnum font-mono text-[22px] font-bold ${urgent ? "urgent" : ""}`}
+                style={{ color: urgent ? "var(--color-fault)" : undefined }}
+              >
+                {formatClock(clock.phaseRemaining)}
+              </div>
+              <div className="eyebrow mt-1">{COUNTDOWN_LABEL[clock.phase]}</div>
             </div>
-            <div className="eyebrow mt-1">{COUNTDOWN_LABEL[clock.phase]}</div>
-          </div>
+          ) : null}
 
           <div className="lg:hidden">
             <SoundToggle on={app.settings.sound} compact />

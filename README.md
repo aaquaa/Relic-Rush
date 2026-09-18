@@ -44,10 +44,9 @@ Each counter is a row with an explicit big `−` on the left and a bigger `+` on
 the right. Nothing on that screen changes the score unless you press one of
 them.
 
-**RELIC is an auto-only button.** After AUTO the manual treats a RELIC as an
-ARTEFACT worth the same 10 points, so there is nothing to distinguish — the
-scorer just presses ARTEFACT. The RELIC button greys out when AUTO ends, which
-means a 10-point ball can never be logged as a 40-point one.
+**RELIC is an auto-only button**, labelled "40 in auto". After AUTO the manual
+treats a RELIC as an ARTEFACT worth the same 10 points, so there is nothing to
+tell apart — the scorer just presses ARTEFACT.
 
 Between matches, scroll down for save, notes, a plain list of where the points
 came from, and penalties.
@@ -71,7 +70,7 @@ On a laptop you never need the mouse.
 | `L` | Add an EXCAVATION lap |
 | `M` / `D` / `C` | Toggle MOBILISE / DOCK / SETUP CAMP |
 | `Z` | Undo |
-| `Space` | Start or pause the clock |
+| `Space` | Start or pause the clock (Clock page) |
 | `F` | Presentation mode (Clock page) |
 | `X` | Field fault siren (Clock page) |
 
