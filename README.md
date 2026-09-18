@@ -35,31 +35,22 @@ To run it locally instead: `npm install && npm run dev`.
 team names. The whole app re-themes to the alliance you picked, which makes it
 obvious at a glance that you are on the right device.
 
-**Score from the console.** The app is built for a phone. Opening it puts a
-full-screen deck in front of you — ARTEFACT, RELIC and LAP as three large
-tiles that grow to fill whatever screen you have, the three once-per-match
-objectives as a row underneath, and start/pause plus undo along the bottom.
-Nothing you need mid-match is off screen, so you never scroll while a match is
-running. Scroll down between matches for the breakdown, penalties, notes and
-save.
+**Score from the console.** The scoring screen holds six controls and nothing
+else: three counters (ARTEFACT, RELIC, LAP), three once-per-match toggles
+(MOBILISE, DOCK, CAMP), and start/pause plus undo. They fill the phone screen,
+so a scorer never scrolls, hunts, or reads during a match.
 
-Tap anywhere on a tile to add one; the small `−` in the corner is the only
-thing that subtracts, so a fumbled tap costs you nothing.
+Each counter is a row with an explicit big `−` on the left and a bigger `+` on
+the right. Nothing on that screen changes the score unless you press one of
+them.
 
-**One RELIC button, not two.** It follows the clock — 40 points during AUTO,
-10 after — because two buttons that look alike is exactly how a relic gets
-logged into the wrong period. The tile always shows what the next one is
-worth. If the phase was wrong, the RELICS rows in the breakdown have steppers
-to move one across.
+**RELIC is an auto-only button.** After AUTO the manual treats a RELIC as an
+ARTEFACT worth the same 10 points, so there is nothing to distinguish — the
+scorer just presses ARTEFACT. The RELIC button greys out when AUTO ends, which
+means a 10-point ball can never be logged as a 40-point one.
 
-**Run the clock from either page.** The clock is shared, so starting it on the
-Score page also starts it on the Clock page, and it keeps running while you
-move between them. The status strip at the top always shows the period
-countdown.
-
-**Save at the end of the match.** "Save match to logs" writes the match to this
-device's history, bumps the match number and resets the console for the next
-one.
+Between matches, scroll down for save, notes, a plain list of where the points
+came from, and penalties.
 
 ### Penalties, with two independent devices
 
@@ -76,10 +67,10 @@ On a laptop you never need the mouse.
 | Key | Action |
 | --- | --- |
 | `A` | Add an ARTEFACT |
-| `R` | Add a RELIC (40 or 10 points, based on the phase) |
+| `R` | Add a RELIC (auto only) |
 | `L` | Add an EXCAVATION lap |
 | `M` / `D` / `C` | Toggle MOBILISE / DOCK / SETUP CAMP |
-| `Z` / `Shift+Z` | Undo / redo |
+| `Z` | Undo |
 | `Space` | Start or pause the clock |
 | `F` | Presentation mode (Clock page) |
 | `X` | Field fault siren (Clock page) |
@@ -107,9 +98,9 @@ currently worth, because that trade-off decides matches.
 SETUP CAMP requires a DOCK, so toggling CAMP sets DOCK too, and clearing DOCK
 clears CAMP.
 
-RELICS collected during AUTO are worth 40 and after AUTO are worth 10, and the
-app keeps the two counts separate so the breakdown and the CSV stay honest
-even though you only ever press one button.
+A RELIC collected after AUTO is worth 10 — identical to an ARTEFACT — so the
+app records it as one. The scoring is the same either way; it just removes a
+button that could only ever be pressed wrongly.
 
 **If the manual is amended**, change the numbers in `lib/game.ts` and the
 scoring, the breakdown, the rulebook's quick reference and the exports all
