@@ -420,21 +420,19 @@ export const actions = {
   },
 
   /**
-   * One RELIC button routes by phase: 40 points during AUTO, 10 after. Two
-   * buttons that look identical is how a scorekeeper logs into the wrong one.
+   * RELICS are only worth anything during AUTO. After AUTO the manual treats
+   * them as ARTEFACTS at the same 10 points, so the scorer just uses the
+   * ARTEFACT button and there is no second relic bucket to get wrong.
    */
-  addRelic(isAuto: boolean) {
-    actions.bump(isAuto ? "relicsAuto" : "relicsTeleop", 1);
+  addRelic() {
+    actions.bump("relicsAuto", 1);
   },
 
-  /** Take the relic back off the bucket it most likely went into. */
-  removeRelic(isAuto: boolean) {
+  removeRelic() {
+    // relicsTeleop only appears in matches saved by an earlier version.
     const t = state.live.tally;
-    const preferred: CounterKey = isAuto ? "relicsAuto" : "relicsTeleop";
-    const fallback: CounterKey = isAuto ? "relicsTeleop" : "relicsAuto";
-    const key =
-      t[preferred] > 0 ? preferred : t[fallback] > 0 ? fallback : null;
-    if (key) actions.bump(key, -1);
+    if (t.relicsAuto > 0) actions.bump("relicsAuto", -1);
+    else if (t.relicsTeleop > 0) actions.bump("relicsTeleop", -1);
   },
 
   toggleFlag(key: "mobilise" | "dock" | "camp") {
