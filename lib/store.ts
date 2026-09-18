@@ -419,6 +419,24 @@ export const actions = {
     });
   },
 
+  /**
+   * One RELIC button routes by phase: 40 points during AUTO, 10 after. Two
+   * buttons that look identical is how a scorekeeper logs into the wrong one.
+   */
+  addRelic(isAuto: boolean) {
+    actions.bump(isAuto ? "relicsAuto" : "relicsTeleop", 1);
+  },
+
+  /** Take the relic back off the bucket it most likely went into. */
+  removeRelic(isAuto: boolean) {
+    const t = state.live.tally;
+    const preferred: CounterKey = isAuto ? "relicsAuto" : "relicsTeleop";
+    const fallback: CounterKey = isAuto ? "relicsTeleop" : "relicsAuto";
+    const key =
+      t[preferred] > 0 ? preferred : t[fallback] > 0 ? fallback : null;
+    if (key) actions.bump(key, -1);
+  },
+
   toggleFlag(key: "mobilise" | "dock" | "camp") {
     const label =
       key === "mobilise" ? "MOBILISE" : key === "dock" ? "DOCK" : "SETUP CAMP";

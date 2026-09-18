@@ -231,3 +231,59 @@ input[type="number"] {
 .add-zone:focus-visible {
   outline: none;
 }
+
+/* The scoring deck fills everything between the status strip and the tab bar,
+   so the buttons are as large as the phone allows and a match never needs a
+   scroll. Above lg the page is two columns and the deck sizes to its content. */
+.deck {
+  min-height: calc(100dvh - 10.5rem);
+}
+@media (min-width: 1024px) {
+  .deck {
+    min-height: 0;
+  }
+}
+
+/* Short phones (a 4.7" screen, or a tall one in landscape) cannot fit the
+   deck at full size, so everything in it steps down a notch rather than
+   pushing the Start button under the tab bar. */
+@media (max-height: 730px) and (max-width: 1023px) {
+  .deck {
+    gap: 0.375rem;
+  }
+  .deck .tile-body {
+    padding: 0.625rem 0.75rem;
+  }
+  .deck .tile-num {
+    font-size: clamp(1.75rem, 9vw, 2.5rem);
+  }
+  .deck .tile-minus {
+    height: 2.5rem;
+    width: 2.5rem;
+    font-size: 18px;
+  }
+  .deck .counter {
+    min-height: 76px;
+  }
+  .deck .objective {
+    min-height: 50px;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+}
+
+/* Smaller still — a 640px-tall budget phone. */
+@media (max-height: 665px) and (max-width: 1023px) {
+  .deck .tile-body {
+    padding: 0.5rem 0.625rem;
+  }
+  .deck .tile-num {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+  }
+  .deck .counter {
+    min-height: 68px;
+  }
+  .deck .objective {
+    min-height: 44px;
+  }
+}
