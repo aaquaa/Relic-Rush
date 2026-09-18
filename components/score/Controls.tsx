@@ -11,23 +11,15 @@ export function Counter({
   value,
   onAdd,
   onSubtract,
-  locked,
-  lockNote,
 }: {
   label: string;
   worth?: string;
   value: number;
   onAdd: () => void;
   onSubtract: () => void;
-  locked?: boolean;
-  lockNote?: string;
 }) {
   return (
-    <div
-      className={`panel flex min-h-[84px] flex-1 items-stretch overflow-hidden ${
-        locked ? "opacity-55" : ""
-      }`}
-    >
+    <div className="panel flex min-h-[84px] flex-1 items-stretch overflow-hidden">
       <button
         type="button"
         onClick={onSubtract}
@@ -50,23 +42,17 @@ export function Counter({
         <span className="tnum font-mono text-[clamp(2rem,10vw,3rem)] font-bold leading-none">
           {value}
         </span>
-        {locked && lockNote ? (
-          <span className="text-center text-[10px] leading-tight text-ink-dim">
-            {lockNote}
-          </span>
-        ) : null}
       </div>
 
       <button
         type="button"
         onClick={onAdd}
-        disabled={locked}
         aria-label={`Add one ${label}`}
-        className="tap flex w-[104px] shrink-0 items-center justify-center border-l disabled:opacity-30 sm:w-[128px]"
+        className="tap flex w-[104px] shrink-0 items-center justify-center border-l sm:w-[128px]"
         style={{
           borderColor:
             "color-mix(in oklab, var(--accent) 35%, var(--color-line))",
-          background: locked ? "transparent" : "var(--accent-deep)",
+          background: "var(--accent-deep)",
           color: "var(--accent)",
         }}
       >
