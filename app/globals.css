@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #08090b;
+  --color-shell: #0d0f13;
+  --color-panel: #12151a;
+  --color-raised: #181c22;
+  --color-line: #232830;
+  --color-line-soft: #1a1e25;
+
+  --color-ink: #e9ecf1;
+  --color-ink-muted: #949ba7;
+  --color-ink-dim: #5f6773;
+
+  --color-red-alliance: #ff3d4d;
+  --color-red-deep: #2b0c12;
+  --color-blue-alliance: #3b82f6;
+  --color-blue-deep: #0b1a33;
+
+  --color-signal: #ffb020;
+  --color-go: #34d399;
+  --color-fault: #ff5a5f;
+
+  --font-display: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", monospace;
+
+  --radius-panel: 14px;
+}
+
+:root {
+  color-scheme: dark;
+  --accent: var(--color-red-alliance);
+  --accent-deep: var(--color-red-deep);
+  --accent-ink: #ffd9dc;
+}
+
+[data-alliance="blue"] {
+  --accent: var(--color-blue-alliance);
+  --accent-deep: var(--color-blue-deep);
+  --accent-ink: #d3e4ff;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  background: var(--color-void);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-display);
+  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numbers should never dance while they count. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* The small technical caps used for every label in the app. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-dim);
+}
+
+.panel {
+  background: var(--color-panel);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-panel);
+}
+
+.hairline {
+  border-color: var(--color-line);
+}
+
+/* Faint diagonal hatch used behind the live score, so the biggest surface
+   in the app isn't a flat rectangle. */
+.hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--accent) 7%, transparent) 0px,
+    color-mix(in oklab, var(--accent) 7%, transparent) 1px,
+    transparent 1px,
+    transparent 7px
+  );
+}
+
+.accent-text {
+  color: var(--accent);
+}
+
+.accent-bg {
+  background: var(--accent);
+}
+
+/* Big tappable control. Deliberately flat with a strong press state:
+   scorekeepers need to feel the hit, not admire the gradient. */
+.tap {
+  transition:
+    transform 80ms cubic-bezier(0.2, 0, 0, 1),
+    background-color 120ms ease,
+    border-color 120ms ease;
+  touch-action: manipulation;
+  user-select: none;
+}
+.tap:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tap:active {
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Pulse used by the live clock in the final seconds. */
+@keyframes urgent {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+.urgent {
+  animation: urgent 1s steps(2, end) infinite;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.enter {
+  animation: slide-up 220ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 40%, transparent);
+  color: #fff;
+}
+
+/* Scrollbars, quietly. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 99px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.field {
+  background: var(--color-shell);
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  padding: 0.625rem 0.75rem;
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.field:focus {
+  border-color: color-mix(in oklab, var(--accent) 55%, var(--color-line));
+}
+.field::placeholder {
+  color: var(--color-ink-dim);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+}
+
+/* The counter card's tap target fills the card, so the press state has to be
+   driven from the card itself. */
+.counter {
+  transition: transform 80ms cubic-bezier(0.2, 0, 0, 1);
+}
+.counter:has(.add-zone:active) {
+  transform: scale(0.985);
+}
+.counter:has(.add-zone:focus-visible) {
+  outline: 2px solid color-mix(in oklab, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+}
+.add-zone:focus-visible {
+  outline: none;
+}

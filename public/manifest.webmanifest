@@ -1,0 +1,14 @@
+{
+  "name": "Relic Rush Scoring Console",
+  "short_name": "Relic Rush",
+  "description": "Field scoring console for the 2026 TDU Offseason Challenge: Relic Rush.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#08090b",
+  "theme_color": "#08090b",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
