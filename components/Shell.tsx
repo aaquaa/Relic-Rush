@@ -130,7 +130,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
         {clock.started ? <ProgressRule fraction={clock.elapsed / 153} /> : null}
       </header>
 
-      <main className="px-4 pb-28 pt-[4.5rem] lg:pb-10 lg:pl-[102px] lg:pr-6">
+      <main className="px-4 pb-24 pt-[4.5rem] lg:pb-10 lg:pl-[102px] lg:pr-6">
         <div className="mx-auto w-full max-w-6xl">{children}</div>
       </main>
 
@@ -207,7 +207,7 @@ function TabLink({ item, active }: { item: NavItem; active: boolean }) {
     <Link
       href={item.href}
       aria-current={active ? "page" : undefined}
-      className={`tap flex flex-col items-center gap-1 py-2.5 ${
+      className={`tap flex flex-col items-center gap-1 py-3 ${
         active ? "text-ink" : "text-ink-dim"
       }`}
     >

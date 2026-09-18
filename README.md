@@ -15,6 +15,12 @@ manual so nobody has to open a PDF on their phone mid-match.
 3. Leave every setting as-is — Vercel detects Next.js on its own — and click
    **Deploy**.
 
+`package.json` has to sit at the **root** of the repository. If the project
+ends up inside a subfolder (which is what happens when you upload an extracted
+zip through the GitHub web UI), Vercel finds nothing to build and every page
+returns `404: NOT_FOUND`. Either move the files to the root, or set
+**Settings → Build and Deployment → Root Directory** to the subfolder.
+
 That's it. There is no database, no environment variable and no paid add-on.
 Every page is prerendered as static HTML, so it runs inside the Vercel Hobby
 (free) plan with room to spare.
@@ -29,9 +35,22 @@ To run it locally instead: `npm install && npm run dev`.
 team names. The whole app re-themes to the alliance you picked, which makes it
 obvious at a glance that you are on the right device.
 
-**Score from the console.** Every counter card is one big tap target: tap
-anywhere on the card to add one, and use the small `−` to correct. The running
-total, the excavation multiplier and the full breakdown update as you go.
+**Score from the console.** The app is built for a phone. Opening it puts a
+full-screen deck in front of you — ARTEFACT, RELIC and LAP as three large
+tiles that grow to fill whatever screen you have, the three once-per-match
+objectives as a row underneath, and start/pause plus undo along the bottom.
+Nothing you need mid-match is off screen, so you never scroll while a match is
+running. Scroll down between matches for the breakdown, penalties, notes and
+save.
+
+Tap anywhere on a tile to add one; the small `−` in the corner is the only
+thing that subtracts, so a fumbled tap costs you nothing.
+
+**One RELIC button, not two.** It follows the clock — 40 points during AUTO,
+10 after — because two buttons that look alike is exactly how a relic gets
+logged into the wrong period. The tile always shows what the next one is
+worth. If the phase was wrong, the RELICS rows in the breakdown have steppers
+to move one across.
 
 **Run the clock from either page.** The clock is shared, so starting it on the
 Score page also starts it on the Clock page, and it keeps running while you
@@ -57,7 +76,7 @@ On a laptop you never need the mouse.
 | Key | Action |
 | --- | --- |
 | `A` | Add an ARTEFACT |
-| `R` | Add a RELIC (auto or teleop, based on the phase) |
+| `R` | Add a RELIC (40 or 10 points, based on the phase) |
 | `L` | Add an EXCAVATION lap |
 | `M` / `D` / `C` | Toggle MOBILISE / DOCK / SETUP CAMP |
 | `Z` / `Shift+Z` | Undo / redo |
@@ -87,6 +106,10 @@ currently worth, because that trade-off decides matches.
 
 SETUP CAMP requires a DOCK, so toggling CAMP sets DOCK too, and clearing DOCK
 clears CAMP.
+
+RELICS collected during AUTO are worth 40 and after AUTO are worth 10, and the
+app keeps the two counts separate so the breakdown and the CSV stay honest
+even though you only ever press one button.
 
 **If the manual is amended**, change the numbers in `lib/game.ts` and the
 scoring, the breakdown, the rulebook's quick reference and the exports all
